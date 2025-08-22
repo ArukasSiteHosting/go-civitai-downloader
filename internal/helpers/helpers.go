@@ -132,9 +132,8 @@ func BytesToSize(bytes uint64) string {
 func ConvertToSlug(str string) string {
 	str = strings.ReplaceAll(str, " ", "_")
 	str = strings.ReplaceAll(str, ":", "-")
-	str = strings.ToLower(str)
 
-	allowedChars := "0123456789abcdefghijklmnopqrstuvwxyz._-"
+	allowedChars := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-"
 
 	var filteredDescription strings.Builder
 	for _, ch := range str {
