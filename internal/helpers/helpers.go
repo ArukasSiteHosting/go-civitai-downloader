@@ -99,8 +99,8 @@ func CheckHash(filePath string, hashes models.Hashes) bool {
 // It's used to display download progress.
 // Note: Consider moving this to the 'downloader' package later.
 type CounterWriter struct {
-	Total  uint64
-	Writer io.Writer
+	Writer io.Writer // Put interface first (8 bytes on 64-bit)
+	Total  uint64    // Then 8-byte integer
 }
 
 // Write implements the io.Writer interface for CounterWriter.
@@ -232,11 +232,9 @@ func CorrectPathBasedOnImageType(tempFilePath, finalFilePath string) (string, er
 	return correctedFinalPath, nil
 }
 
-// TODO: Move loadConfig function to internal/config/config.go
-
 // -- Hashing Helper --
 func calculateHash(filePath string, hashAlgo hash.Hash) (string, error) {
-	file, err := os.Open(SanitizePath(filePath))
+	file, err := os.Open(filePath)
 	if err != nil {
 		return "", fmt.Errorf("opening file %s for hashing: %w", filePath, err)
 	}
