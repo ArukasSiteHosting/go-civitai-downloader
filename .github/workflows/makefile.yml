@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "dev" ]
 
+env:
+  CGO_ENABLED: 1
+
 jobs:
   build:
 
