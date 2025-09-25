@@ -17,8 +17,13 @@ jobs:
       with:
         go-version: '1.23'
 
+    - name: Install Packages
+      uses: awalsh128/cache-apt-pkgs-action@v1.5.3
+      with:
+        packages: 'g++-mingw-w64-x86-64 gcc-mingw-w64-x86-64'
+
     - name: Build
-      run: make release
+      run: make release-cross
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
