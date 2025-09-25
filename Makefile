@@ -96,13 +96,13 @@ release-cross: clean
 	@mkdir -p release
 	@echo "Building Linux AMD64..."
 	@CGO_ENABLED=1 GOOS=linux GOARCH=amd64 $(GO) build -ldflags="-s -w" -o release/$(BINARY_NAME)-linux-amd64 $(MAIN_PKG) || echo "Linux AMD64 build failed"
-	@echo "Building Linux ARM64..."
-	@CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ CGO_ENABLED=1 GOOS=linux GOARCH=arm64 $(GO) build -ldflags="-s -w" -o release/$(BINARY_NAME)-linux-arm64 $(MAIN_PKG) || echo "Linux ARM64 build failed"
+	# @echo "Building Linux ARM64..."
+	# @CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ CGO_ENABLED=1 GOOS=linux GOARCH=arm64 $(GO) build -ldflags="-s -w" -o release/$(BINARY_NAME)-linux-arm64 $(MAIN_PKG) || echo "Linux ARM64 build failed"
 	@echo "Building Windows AMD64..."
 	@CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ CGO_ENABLED=1 GOOS=windows GOARCH=amd64 $(GO) build -ldflags="-s -w" -o release/$(BINARY_NAME)-windows-amd64.exe $(MAIN_PKG) || echo "Windows AMD64 build failed"
 	@echo "Creating compressed archives for successfully built binaries..."
 	@test -f release/$(BINARY_NAME)-linux-amd64 && (cd release && tar -czf $(BINARY_NAME)-linux-amd64.tar.gz $(BINARY_NAME)-linux-amd64 && rm $(BINARY_NAME)-linux-amd64) || true
-	@test -f release/$(BINARY_NAME)-linux-arm64 && (cd release && tar -czf $(BINARY_NAME)-linux-arm64.tar.gz $(BINARY_NAME)-linux-arm64 && rm $(BINARY_NAME)-linux-arm64) || true
+	# @test -f release/$(BINARY_NAME)-linux-arm64 && (cd release && tar -czf $(BINARY_NAME)-linux-arm64.tar.gz $(BINARY_NAME)-linux-arm64 && rm $(BINARY_NAME)-linux-arm64) || true
 	@test -f release/$(BINARY_NAME)-windows-amd64.exe && (cd release && zip $(BINARY_NAME)-windows-amd64.zip $(BINARY_NAME)-windows-amd64.exe && rm $(BINARY_NAME)-windows-amd64.exe) || true
 	@echo "Cross-platform release archives created (if builds succeeded):"
 	@ls -la release/
