@@ -13,7 +13,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
+	"regexp"
+	
 	"go-civitai-download/internal/models" // Import the models package
 
 	log "github.com/sirupsen/logrus"
@@ -130,19 +131,11 @@ func BytesToSize(bytes uint64) string {
 
 // ConvertToSlug converts a string into a filesystem-friendly slug.
 func ConvertToSlug(str string) string {
+	re := regexp.MustCompile(`[<>:"/\\|?*\x00-\x1F]`)
 	str = strings.ReplaceAll(str, " ", "_")
 	str = strings.ReplaceAll(str, ":", "-")
-	str = strings.ToLower(str)
 
-	allowedChars := "0123456789abcdefghijklmnopqrstuvwxyz._-"
-
-	var filteredDescription strings.Builder
-	for _, ch := range str {
-		if strings.ContainsRune(allowedChars, ch) {
-			filteredDescription.WriteRune(ch)
-		}
-	}
-	str = filteredDescription.String()
+	str := re.ReplaceAllString(str, "_")
 
 	// Simplify repeated separators
 	for strings.Contains(str, "--") {
@@ -156,6 +149,8 @@ func ConvertToSlug(str string) string {
 
 	// Remove leading/trailing separators
 	str = strings.Trim(str, "_-")
+	
+	str = strings.TrimSpace(str)
 
 	return str
 }
